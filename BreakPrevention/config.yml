@@ -1,0 +1,8 @@
+Enable: true
+Prevent:
+  BlockBreak: true
+  BlockPlace: true
+  BlockMelt: true
+  BlockBurn: true
+  FireExtinguish: true
+  ItemFrameInteract: true
