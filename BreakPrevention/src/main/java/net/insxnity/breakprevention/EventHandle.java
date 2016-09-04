@@ -1,5 +1,5 @@
 /**
- * @(#)EventHandle.java        v0.1.0-BUKKIT-BETA 16/8/30
+ * @(#)EventHandle.java        v0.1.0-BUKKIT-BETA 16/9/4
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,9 +20,7 @@
 
 package net.insxnity.breakprevention;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,88 +30,95 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.block.BlockSpreadEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 /**
  * BreakPrevention EventHandler<br>
  * Handles the Events for the Plugin
  * 
  * @version 
- *        1.00 30 Aug, 2016
+ *        1.01 4 Sep, 2016
  * @author
  *        Insxnity (Ben Morris) */
 public class EventHandle implements Listener {
     
     public BreakPrevention plugin = null;
     
+    public Configuration config = null;
+    
     public EventHandle(BreakPrevention plugin) {
         this.plugin = plugin;
+        config = BreakPrevention.getMainConfiguration();
     }
+    
+    
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if (!handleEvent("Prevent.BlockBreak")) return;
+        
+        if (!Events.BLOCK_BREAK.getToHandle()) return;
         Player player = event.getPlayer();
         
-        event.setCancelled(cancelEvent(player, "breakprevention.break"));
-        canceled(player, "Break Blocks");
+        event.setCancelled(config.cancelPlayerEvent(player, Events.BLOCK_BREAK));
+        config.canceled(player, Events.BLOCK_BREAK);
     }
+    
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (!handleEvent("Prevent.BlockPlace")) return;
+        if (!Events.BLOCK_PLACE.getToHandle()) return;
         Player player = event.getPlayer();
         
-        event.setCancelled(cancelEvent(player, "breakprevention.place"));
-        canceled(player, "Place Blocks");
+        event.setCancelled(config.cancelPlayerEvent(player, Events.BLOCK_PLACE));
+        config.canceled(player, Events.BLOCK_PLACE);
     }
+    
     @EventHandler
     public void onEntityInteract(PlayerInteractEntityEvent event) {
-        if (!handleEvent("Prevent.ItemFrameInteract")) return;
+        if (!Events.ITEM_FRAME_INTERACT.getToHandle()) return;
         Player player = event.getPlayer();
         
-        if (event.getRightClicked().getType()==EntityType.ITEM_FRAME) {
-            if (cancelEvent(player, "breakprevention.itemframe")) {
+        if (event.getRightClicked().getType()==EntityType.ITEM_FRAME 
+                && config.cancelPlayerEvent(player,
+                        Events.ITEM_FRAME_INTERACT)) {
                 event.setCancelled(true);
-                canceled(player, "Interact With Item Frames");
-            }
+                config.canceled(player, Events.ITEM_FRAME_INTERACT);
         }
         
     }
+    
+    @EventHandler
+    public void onEntityDamage(EntityDamageByEntityEvent event) {
+        if (event.getEntityType()==EntityType.ITEM_FRAME
+                && Events.ITEM_FRAME_INTERACT.getToHandle()) {
+            event.setCancelled(true);
+            if (event.getDamager() instanceof Player) {
+                config.canceled((Player) event.getDamager(), Events.ITEM_FRAME_INTERACT);
+            }
+        }
+    }
+    
+    @EventHandler
+    public void onBlockSpread(BlockSpreadEvent event) {
+        if (event.getBlock().getType().equals(Material.FIRE)
+                && Events.FIRE_SPREAD.getToHandle()) {
+            event.setCancelled(true);
+        }
+    }
+    
     @EventHandler
     public void onBlockFade(BlockFadeEvent event) {
-        if (event.getBlock().getType().equals(Material.ICE)) {
-            if (handleEvent("Prevent.BlockMelt")) {
-                event.setCancelled(true);
-                return;
-            }
+        if (event.getBlock().getType().equals(Material.ICE)
+                && Events.BLOCK_MELT.getToHandle()) {
+            event.setCancelled(true);
         }
-        else if (event.getBlock().getType().equals(Material.FIRE)) {
-            if (handleEvent("Prevent.FireExtinguish")) {
-                event.setCancelled(true);
-                return;
-            }
+        else if (event.getBlock().getType().equals(Material.FIRE)
+                && Events.FIRE_BURNOUT.getToHandle()) {
+            event.setCancelled(true);
         }
     }
+    
     @EventHandler
     public void onBlockBurn(BlockBurnEvent event) {
-        boolean cancel = handleEvent("Prevent.BlockBurn");
-        event.setCancelled(cancel);
-    }
-    public Boolean handleEvent(String configKey) {
-        boolean handle = false;
-        FileConfiguration config = plugin.getMainConfiguration().getData();
-        handle = config.getBoolean(configKey);
-        return handle;
-    }
-    public Boolean cancelEvent(Player player, String permission) {
-        boolean cancel = true;
-        if (player.isOp() || player.hasPermission(permission)) {
-            cancel = false;
-        }
-        return cancel;
-    }
-    public void canceled(Player player, String canceledText) {
-        if (!handleEvent("Prevent.SendPlayerAlert")) return;
-        player.sendMessage(ChatColor.RED.toString() + "You are not allowed to "
-                + ChatColor.YELLOW.toString() + canceledText 
-                + ChatColor.RED.toString() + "!");
+        event.setCancelled(Events.BLOCK_BURN.getToHandle());
     }
 }

@@ -1,14 +1,11 @@
 name: BreakPrevention
 main: net.insxnity.breakprevention.BreakPrevention
+load: STARTUP
 version: 1.0
-author: [Insxnity]
-permissions:
-  breakprevention.break:
-    description: Allows a user to break blocks
-    default: op
-  breakprevention.place:
-    description: Allows a user to place blocks
-    default: op
-  breakprevention.itemframe:
-    description: Allows a user to interact with ItemFrames
-    default: op
+author: Insxnity
+commands:
+  bp:
+  	description: BreakPrevention Core Command
+    usage: /<command> reload
+    alias: breakprevention
+    

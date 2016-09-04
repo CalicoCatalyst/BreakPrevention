@@ -1,8 +1,73 @@
-Enable: true
-Prevent:
-  BlockBreak: true
-  BlockPlace: true
-  BlockMelt: true
-  BlockBurn: true
-  FireExtinguish: true
-  ItemFrameInteract: true
+############################################################
+# +------------------------------------------------------+ #
+# |             BreakPrevention Main Config              | #
+# +------------------------------------------------------+ #
+############################################################
+
+# Should we enable the plugin?
+enable: true
+
+# Should op's be able to bypass permissions
+op-bypass: true
+
+# What command should be used to reload the config?
+# Make sure this doesn't interfere with other plugins!
+reload-command: '/bp reload'
+
+# Used by the Plugin. Changing this will break the config. Probably.
+config-version: 1
+
+############################################################
+# +------------------------------------------------------+ #
+# |                       Handling                       | #
+# +------------------------------------------------------+ #
+############################################################
+
+# What operations should users be prevented from doing?
+prevent:
+  block-break: true
+  block-place: true
+  block-melt: false
+  block-burn: false
+  fire-burnout: false
+  fire-spread: true
+  player-fire-extinguish: true
+  item-frame-interaction: true
+  
+# What worlds should the plugin operate in?
+# Set to "all" for global protection
+prevent-worlds:
+  - 'all'
+
+############################################################
+# +------------------------------------------------------+ #
+# |                      Permissions                     | #
+# +------------------------------------------------------+ #
+############################################################
+
+# Should allowing events be permission based?
+use-permissions: true
+
+# What permissions should players use?
+permissions:
+  block-break: 'breakprevention.blockbreak'
+  block-place: 'breakprevention.blockplace'
+  fire-extinguish: 'breakprevention.fire'
+  item-frame-interaction: 'breakprevention.itemframe'
+
+############################################################
+# +------------------------------------------------------+ #
+# |                       Messages                       | #
+# +------------------------------------------------------+ #
+############################################################
+
+# What message, if any, Should be displayed to the player when they are prevented from doing something?
+# To disable the message, simply leave it blank
+messages:
+  block-break: ''
+  block-place: ''
+  fire-extinguish: ''
+  item-frame-interaction: ''
+  
+## End BreakPrevention Configuration.
+## Credit to @Essentials for the config layout. 

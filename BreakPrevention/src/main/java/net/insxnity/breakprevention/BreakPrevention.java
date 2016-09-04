@@ -1,5 +1,5 @@
 /**
- * @(#)BreakPrevention.java        v0.1.0-BUKKIT-BETA 16/8/30
+ * @(#)BreakPrevention.java        v0.1.0-BUKKIT-BETA 16/9/4
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +22,7 @@ package net.insxnity.breakprevention;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.insxnity.api.data.storage.YamlConfigFile;
-
-import org.bukkit.plugin.Plugin;
+import java.util.logging.Logger;
 
 /**
  * BreakPrevention Main Class<br>
@@ -33,35 +31,50 @@ import org.bukkit.plugin.Plugin;
  * @see 
  *        <a href="http://Insxnity.Net">Insxnity.Net</a>
  * @version 
- *        1.00 30 Aug, 2016
+ *        1.00 04 Sep, 2016
  * @author
  *        Insxnity (Ben Morris) */
 public class BreakPrevention extends JavaPlugin {
     
-    private Plugin plugin = null;
+    private static BreakPrevention plugin = null;
     
-    private YamlConfigFile mainConfiguration = null;
+    private static Logger logger = null;
+    
+    private static Configuration mainConfiguration = null;
     
     @Override
     public void onEnable() {
         super.onEnable();
         plugin = this;
+        logger = plugin.getLogger();
         
-        mainConfiguration = new YamlConfigFile(plugin, "config.yml");
+        logger.info("Enabling...");
+        
+        mainConfiguration = new Configuration(plugin, "config.yml");
         
         if (!getMainConfiguration().getData().getBoolean("Enable", true)) {
+            logger.warning("Enable set to false! Disabling plugin...");
             plugin.getPluginLoader().disablePlugin(this);
         }
 
         plugin.getServer().getPluginManager().registerEvents(new EventHandle(this), plugin);
         
+        logger.info("Enabled!");
+        
+    }
+    
+    @Override
+    public void onDisable() {
+        plugin = null;
+        logger = null;
+        mainConfiguration = null;
     }
 
-    public YamlConfigFile getMainConfiguration() {
+    public static Configuration getMainConfiguration() {
         return mainConfiguration;
     }
 
-    public Plugin getPlugin() {
+    public static BreakPrevention getPlugin() {
         return plugin;
     }
     
