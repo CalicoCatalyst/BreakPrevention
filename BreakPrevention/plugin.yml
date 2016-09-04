@@ -5,7 +5,6 @@ version: 1.0
 author: Insxnity
 commands:
   bp:
-  	description: BreakPrevention Core Command
+    description: BreakPrevention Core Command
     usage: /<command> reload
     alias: breakprevention
-    
