@@ -23,14 +23,16 @@ config-version: 1
 # +------------------------------------------------------+ #
 ############################################################
 
-# What operations should users be prevented from doing?
+# What should be prevented on the server?
 prevent:
   block-break: true
   block-place: true
-  block-melt: false
-  block-burn: false
-  fire-burnout: false
+  block-melt: true
+  block-burn: true
+  fire-burnout: true
   fire-spread: true
+  armor-stand-interaction: true
+  fish: true
   player-fire-extinguish: true
   item-frame-interaction: true
   
@@ -54,6 +56,9 @@ permissions:
   block-place: 'breakprevention.blockplace'
   fire-extinguish: 'breakprevention.fire'
   item-frame-interaction: 'breakprevention.itemframe'
+  armor-stand-interaction: 'breakprevention.armorstand'
+  fish: 'breakprevention.fish'
+  all: 'breakprevention.*'
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -68,6 +73,7 @@ messages:
   block-place: ''
   fire-extinguish: ''
   item-frame-interaction: ''
+  armor-stand-interaction: ''
+  fish: ''
   
 ## End BreakPrevention Configuration.
-## Credit to @Essentials for the config layout. 

@@ -1,5 +1,5 @@
 /**
- * @(#)Configuration.java        v0.1.0-BUKKIT-BETA 16/9/4
+ * @(#)Configuration.java        v1.2.0-BUKKIT-BETA 16/9/4
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import net.insxnity.api.data.storage.YamlConfigFile;
+import net.insxnity.api.data.storage.config.YamlConfigFile;
 
 /**
  * BreakPrevention Configuration Handler<br>
@@ -51,7 +51,7 @@ public class Configuration extends YamlConfigFile {
         
         boolean isNull = permission == null;
         boolean isEmpty = permission.length() == 0;
-        boolean hasPermission = player.hasPermission(permission);
+        boolean hasPermission = player.hasPermission(permission) || player.hasPermission(getData().getString("permissions.all"));
         
         if ((player.isOp() && opOverride)
                 || (!isNull && !isEmpty && hasPermission)) {

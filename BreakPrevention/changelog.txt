@@ -1,0 +1,5 @@
+1.2.0:
+  + Armour Stand Prevention
+  + Fishing Protection
+  + Override permission ('breakprevention.*')
+  

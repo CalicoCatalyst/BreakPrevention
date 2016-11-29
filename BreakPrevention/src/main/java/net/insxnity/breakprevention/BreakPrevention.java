@@ -1,5 +1,5 @@
 /**
- * @(#)BreakPrevention.java        v0.1.0-BUKKIT-BETA 16/9/4
+ * @(#)BreakPrevention.java        v1.1.4-RELEASE 2016/11/17
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

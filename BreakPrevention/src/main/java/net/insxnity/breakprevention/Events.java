@@ -33,6 +33,8 @@ public class Events {
     public static final Events BLOCK_BREAK = new Events("block-break", true);
     public static final Events BLOCK_PLACE = new Events("block-place", true);
     public static final Events ITEM_FRAME_INTERACT = new Events("item-frame-interact", true);
+    public static final Events ARMOR_STAND_INTERACT = new Events("armor-stand-interact", true);
+    public static final Events FISH = new Events("fish", true);
     public static final Events PLAYER_FIRE_EXTINGUISH = new Events("player-fire-extinguish", true);
     public static final Events FIRE_SPREAD = new Events("fire-spread", false);
     public static final Events BLOCK_MELT = new Events("block-melt", false);
